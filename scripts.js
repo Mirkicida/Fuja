@@ -1,12 +1,16 @@
-var field;
+var field, player
 
-function Field(cols, rows, containerId){
-
-    this.cols = cols;
-    this.rows = rows;
-    this.container = document.querySelector(containerId);
-
-    this.createField = function(){
+class Field{
+        constructor (cols, rows, containerId){
+    
+            this.cols = cols;
+            this.rows = rows;
+            this.container = document.querySelector(containerId);
+            this.createField();
+    
+        }
+       
+    createField(){
         var field = [];
 
         for(var i = 0; i < this.rows; i++){
@@ -22,11 +26,11 @@ function Field(cols, rows, containerId){
         this.drawField();
     }
 
-        this.createRock = function(){
+        createRock(){
             return Math.trunc(Math.random()*5) === 1 ? 'X' : '';
         }
 
-    this.drawField = function(){
+    drawField(){
         var template = '';
 
         for(var i = 0; i < this.rows; i++){
@@ -48,7 +52,72 @@ function Field(cols, rows, containerId){
 
 }
 
+class Character{
+	constructor(field, x, y, skin){
+
+        this.table = field;
+		this.skin = skin;
+		this.x = x;
+		this.y = y;
+		this.setPosition(this.x, this.y);
+
+	}
+
+	up(){
+		if(this.y > 0){
+
+			this.setPosition(this.x, this.y - 1);
+
+		}
+	}
+
+	down(){
+		if(this.y+1 < this.table.rows){
+
+			this.setPosition(this.x, this.y + 1);
+
+		}
+	}
+
+	left(){
+		if(this.x > 0){
+
+			this.setPosition(this.x - 1, this.y);
+
+		}
+	}
+
+	right(){
+		if(this.x+1 < this.table.cols){
+
+			this.setPosition(this.x + 1, this.y);
+
+		}
+	}
+
+	setPosition(x, y){
+		if(this.table.field[y][x] === ''){
+
+			this.table.field[this.y][this.x] = '';
+			this.x = x;
+			this.y = y;
+			this.table.field[this.y][this.x] = this.skin;
+
+			this.table.drawField();
+		}
+	}
+}
+
+class Player extends Character{
+	constructor(field){
+
+		super(field, 0, 0, '<=>');
+
+	}
+}
 
 
-field = new Field(3, 4, '#myTable');
-field.createField();
+
+
+field = new Field(8, 8, '#myTable');
+player = new Player(field);
