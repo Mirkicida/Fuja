@@ -59,7 +59,9 @@ class Character{
 		this.skin = skin;
 		this.x = x;
 		this.y = y;
-		this.setPosition(this.x, this.y);
+		if(!this.setPosition(this.x, this.y)){
+			throw Error();
+		}
 
 	}
 
@@ -104,20 +106,57 @@ class Character{
 			this.table.field[this.y][this.x] = this.skin;
 
 			this.table.drawField();
+			return true;
 		}
+		return false;
 	}
 }
 
 class Player extends Character{
 	constructor(field){
 
-		super(field, 0, 0, '<=>');
+		super(field, 0, 0, 'o-o');
 
 	}
 }
 
+class Npc extends Character{
+	constructor(field){
+
+		var x = Math.trunc(Math.random()*field.cols),
+			y = Math.trunc(Math.random()*field.rows);
+
+		super(field, x, y, '*-*');
+		setInterval(this.walk.bind(this), 500);
+	}
+
+	walk(){
+		var direction = Math.trunc(Math.random() * 4 ) + 1;
+
+		switch(direction){
+			case 1: this.up(); break;
+			case 2: this.down();break;
+			case 3: this.right(); break;
+			case 4: this.left(); break;
+		}
+	}
+
+
+}
 
 
 
-field = new Field(8, 8, '#myTable');
-player = new Player(field);
+function startField(){
+
+	field = new Field(8, 8, '#myTable');
+	try{
+		player = new Player(field);
+		npc = new Npc(field);
+	}catch(e){
+		console.log(`Montando mapa novamente . . .`);
+		startField();
+	}
+	
+}
+
+startField();
