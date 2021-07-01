@@ -2,21 +2,26 @@
 <html>
 <body>
 
-<table id="myTable"></table>
 
-<style>
+    <input type="number" id="cols" placeholder="Cols" />
+    <input type="number" id="rows" placeholder="Rows" />
+    <button onclick="startField()" >Start</button>
 
-    table, tr, td{
-        border: 1px solid;
-    }
+    <table id="myTable"></table>
 
-    td{
-        width: 45px;
-        height: 45px;
-        text-align: center;
-    }
+    <style>
 
-</style>
+        table, tr, td{
+            border: 1px solid;
+        }
+
+        td{
+            width: 45px;
+            height: 45px;
+            text-align: center;
+        }
+
+    </style>
 
 <script src="./scripts.js" ></script>
 </body>
